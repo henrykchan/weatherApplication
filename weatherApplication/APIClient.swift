@@ -11,9 +11,20 @@ import Alamofire
 
 struct APIClient {
     
-    static func getForecast(latitude: String, longitude: String, completion: @escaping ([String: Any]) -> Void) {
+    static func getForecast(latitude: String, longitude: String, completion: @escaping ([String: Any]?, NSError?) -> Void) {
         
         let urlString =  "\(Secret.apiUrl)\(Secret.apiUrl)/\(latitude),\(longitude)"
+        
+        NetworkRequest.urlRequest(url: urlString, method: .get, parameters: nil) { (dataResponse) in
+            
+            guard let JSON = dataResponse.result.value
+                else {
+                    completion(nil, dataResponse.result.error as NSError?)
+                    return
+            }
+            
+            completion(JSON as? [String:Any] , nil)
+        }
         
     }
     
