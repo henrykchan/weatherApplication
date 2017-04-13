@@ -9,49 +9,58 @@
 import Foundation
 
 struct Forecast {
-    
-    var timezone: String?
-    var time: Date?
-    var timeString: String?
-    var icon: String?
-    var summary: String?
-    var temperature: Double?
-    var humidity: Double?
+
+    var currentTemp: Int?
+    var highTemp: Int?
+    var lowTemp: Int?
+    var condition: String?
+    var cityName: String?
+    var windSpeed: Int?
+    var cloud: Int?
+    var sunrise: Int?
+    var sunset: Int?
+    var humidity: Int?
     
     init(dictionary: [String:Any]) {
         
-        // Unwrapping time
-        if let timeDictionary = dictionary["time"] as? Double {
-            self.time = Date(timeIntervalSince1970: timeDictionary)
-            
-            // Date Formatter for title string
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "hh"
-            
-            if let unwrappedTime = self.time {
-                self.timeString = dateFormatter.string(from: unwrappedTime)
-            }
+        if let currentTempDict = dictionary["temp"] as? Int {
+            currentTemp = currentTempDict
         }
         
-        // Unwrapping summary
-        if let summaryDictionary = dictionary["summary"] as? String {
-            self.summary = summaryDictionary
+        if let highTempDict = dictionary["temp_max"] as? Int {
+            highTemp = highTempDict
         }
         
-        // Unwrapping icon
-        if let iconDictonary = dictionary["icon"] as? String {
-            self.icon = iconDictonary
+        if let lowTempDict = dictionary["temp_min"] as? Int {
+            lowTemp = lowTempDict
         }
         
-        // Unwrapping temperature
-        
-        if let temperatureDictionary = dictionary["temperature"] as? Double {
-            self.temperature = temperatureDictionary
+        if let conditionDict = dictionary["description"] as? String {
+            condition = conditionDict
         }
         
-        if let temperatureHumidity = dictionary ["humidity"] as? Double {
-            self.humidity = temperatureHumidity
+        if let cityNameDict = dictionary["name"] as? String {
+            cityName = cityNameDict
         }
         
+        if let windSpeedDict = dictionary["speed"] as? Int {
+            windSpeed = windSpeedDict
+        }
+        
+        if let cloudDict = dictionary["cloud"] as? Int {
+            cloud = cloudDict
+        }
+        
+        if let sunriseDict = dictionary["sunrise"] as? Int {
+            sunrise = sunriseDict
+        }
+        
+        if let sunsetDict = dictionary["sunset"] as? Int {
+            sunset = sunsetDict
+        }
+        
+        if let humidityDict = dictionary["humidity"] as? Int {
+            humidity = humidityDict
+        }
     }
 }
