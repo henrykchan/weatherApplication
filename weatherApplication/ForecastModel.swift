@@ -16,10 +16,10 @@ struct Forecast {
     var condition: String?
     var cityName: String?
     var windSpeed: Int?
-    var cloud: Int?
-    var sunrise: Int?
-    var sunset: Int?
-    var humidity: Int?
+//    var cloud: Int?
+//    var sunrise: Int?
+//    var sunset: Int?
+//    var humidity: Int?
     
     init(dictionary: [String:Any]) {
         
@@ -47,20 +47,20 @@ struct Forecast {
             windSpeed = windSpeedDict
         }
         
-        if let cloudDict = dictionary["cloud"] as? Int {
-            cloud = cloudDict
-        }
+//        if let cloudDict = dictionary["cloud"] as? Int {
+//            cloud = cloudDict
+//        }
+//        
+//        if let sunriseDict = dictionary["sunrise"] as? Int {
+//            sunrise = sunriseDict
+//        }
+//        
+//        if let sunsetDict = dictionary["sunset"] as? Int {
+//            sunset = sunsetDict
+//        }
         
-        if let sunriseDict = dictionary["sunrise"] as? Int {
-            sunrise = sunriseDict
-        }
-        
-        if let sunsetDict = dictionary["sunset"] as? Int {
-            sunset = sunsetDict
-        }
-        
-        if let humidityDict = dictionary["humidity"] as? Int {
-            humidity = humidityDict
-        }
+//        if let humidityDict = dictionary["humidity"] as? Int {
+//            humidity = humidityDict
+//        }
     }
 }
