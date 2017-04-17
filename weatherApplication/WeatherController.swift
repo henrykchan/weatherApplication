@@ -24,6 +24,9 @@ class WeatherController: UIViewController {
         
     }
 
+    func layOut() {
+        
+    }
   
 
 }
