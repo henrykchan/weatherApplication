@@ -16,7 +16,7 @@ class DataStore {
     fileprivate init() {}
     
 
-    
+    // Function to get weather from JSON and returning a Forecast object
     func getWeather(city: String, completion: @escaping (Forecast?, NSError?) -> Void ) {
         
         var currentForecast:Forecast!
