@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class WeatherController: UIViewController {
     
@@ -22,10 +23,28 @@ class WeatherController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        createLayout()
+        
     }
 
-    func layOut() {
+    func createLayout() {
         
+        self.view.backgroundColor = UIColor.blue
+        
+        self.view.addSubview(currentTempLabel)
+//        currentTempLabel.backgroundColor = UIColor.white
+        currentTempLabel.snp.makeConstraints { (make) in
+            make.centerX.equalTo(self.view.snp.centerX)
+            make.top.equalTo(self.view.snp.top).offset(100)
+            make.width.equalTo(self.view.snp.width)
+//            make.height.equalTo(self.view.snp.height).dividedBy(4)
+        }
+        currentTempLabel.text = "66°"
+        currentTempLabel.font = UIFont(name: "Avenir-Light", size: 100)
+        currentTempLabel.textColor = UIColor.black
+//        currentTempLabel.baselineAdjustment = .alignCenters
+        currentTempLabel.textAlignment = .center
     }
   
 
