@@ -10,12 +10,12 @@ import Foundation
 
 struct Forecast {
 
-    var currentTemp: Int?
-    var highTemp: Int?
-    var lowTemp: Int?
-    var condition: String?
-    var cityName: String?
-    var windSpeed: Int?
+    var currentTemp = Int()
+    var highTemp = Int()
+    var lowTemp = Int()
+    var condition = String()
+    var cityName = String()
+    var windSpeed = Int()
 //    var cloud: Int?
 //    var sunrise: Int?
 //    var sunset: Int?
@@ -24,27 +24,27 @@ struct Forecast {
     init(dictionary: [String:Any]) {
         
         if let currentTempDict = dictionary["temp"] as? Int {
-            currentTemp = currentTempDict
+            self.currentTemp = currentTempDict
         }
         
         if let highTempDict = dictionary["temp_max"] as? Int {
-            highTemp = highTempDict
+            self.highTemp = highTempDict
         }
         
         if let lowTempDict = dictionary["temp_min"] as? Int {
-            lowTemp = lowTempDict
+            self.lowTemp = lowTempDict
         }
         
         if let conditionDict = dictionary["description"] as? String {
-            condition = conditionDict
+            self.condition = conditionDict
         }
         
         if let cityNameDict = dictionary["name"] as? String {
-            cityName = cityNameDict
+            self.cityName = cityNameDict
         }
         
         if let windSpeedDict = dictionary["speed"] as? Int {
-            windSpeed = windSpeedDict
+            self.windSpeed = windSpeedDict
         }
         
 //        if let cloudDict = dictionary["cloud"] as? Int {

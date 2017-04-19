@@ -19,9 +19,14 @@ class DataStore {
     // Function to get weather from JSON and returning a Forecast object
     func getWeather(city: String, completion: @escaping (Forecast?, NSError?) -> Void ) {
         
-        var currentForecast:Forecast!
+        
+        
+//        guard var unwrappedCurrentForecast = currentForecast else{return}
+        
         
         APIClient.getForecast(city: city) { (JSON, error) in
+            
+            
             
             guard let unwrappedJSON = JSON
                 else {
@@ -29,23 +34,30 @@ class DataStore {
                     return
             }
             
+            var currentForecast = Forecast(dictionary: unwrappedJSON)
+            
             // Setting City Name
             if let cityName = unwrappedJSON["name"] as? String {
                 currentForecast.cityName = cityName
                 print(cityName)
+                print(currentForecast.cityName)
             }
             
             // Setting temperature
             if let main = unwrappedJSON["main"] as? [String:Any] {
-                
                 // Setting current temperature
                 if let currentTemp = main["temp"] as? Int {
+                    print(currentTemp)
                     currentForecast.currentTemp = currentTemp
+                    print("We're HEREEE!!!!!!!")
+                    print(currentForecast.currentTemp as Any)
+                    
                 }
                 
                 // Setting high temperature
                 if let maxTemp = main["temp_max"] as? Int {
                     currentForecast.highTemp = maxTemp
+                    print(currentForecast.highTemp as Any)
                 }
                 
                 // Setting low temperature
@@ -55,9 +67,12 @@ class DataStore {
             }
             
            // Setting weather condition description
-            if let weather = unwrappedJSON["weather"] as? [String:Any] {
-                if let description = weather["description"] as? String {
+            if let weather = unwrappedJSON["weather"] as? [[String:Any]] {
+                for weatherAttributes in weather{
+                if let description = weatherAttributes["description"] as? String {
                     currentForecast.condition = description
+                    print(currentForecast.condition as Any)
+                }
                 }
             }
             
@@ -65,8 +80,11 @@ class DataStore {
             if let wind = unwrappedJSON["wind"] as? [String:Any] {
                 if let windSpeed = wind["speed"] as? Int {
                     currentForecast.windSpeed = windSpeed
+                    print(currentForecast.windSpeed as Any)
                 }
             }
+            
+            completion(currentForecast,nil)
         }
     }
 }

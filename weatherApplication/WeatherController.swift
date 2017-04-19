@@ -27,6 +27,7 @@ class WeatherController: UIViewController {
         
         
         createLayout()
+        gettingWeather()
         
     }
 
@@ -40,7 +41,7 @@ class WeatherController: UIViewController {
             make.centerX.equalTo(self.view.snp.centerX)
             make.top.equalTo(self.view.snp.top).offset(100)
         }
-        currentTempLabel.text = "66°"
+//        currentTempLabel.text = "66°"
         currentTempLabel.font = UIFont(name: "Avenir-Light", size: 100)
         currentTempLabel.textColor = UIColor.black
 //        currentTempLabel.baselineAdjustment = .alignCenters
@@ -107,6 +108,20 @@ class WeatherController: UIViewController {
             make.height.equalTo(1)
         }
         dividerLineLabel.backgroundColor = UIColor.black
+    }
+    
+    func gettingWeather() {
+        sharedInstance.getWeather(city: "brooklyn") { (forecast, error) in
+            
+            guard let unwrappedForecast = forecast else{return}
+            
+            if let error = error {
+                print ("Oops looks like there is an error fetching forecast, Error:\(error)")
+            }
+            else {
+                self.currentTempLabel.text = String(describing: unwrappedForecast.currentTemp)
+            }
+        }
     }
 
 }
