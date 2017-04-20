@@ -20,10 +20,6 @@ class DataStore {
     func getWeather(city: String, completion: @escaping (Forecast?, NSError?) -> Void ) {
         
         
-        
-//        guard var unwrappedCurrentForecast = currentForecast else{return}
-        
-        
         APIClient.getForecast(city: city) { (JSON, error) in
             
             
@@ -48,7 +44,8 @@ class DataStore {
                 // Setting current temperature
                 if let currentTemp = main["temp"] as? Int {
                     print(currentTemp)
-                    currentForecast.currentTemp = currentTemp
+                    let fahrenheit = self.convertToFahrenheit(temp: currentTemp)
+                    currentForecast.currentTemp = fahrenheit
                     print("We're HEREEE!!!!!!!")
                     print(currentForecast.currentTemp as Any)
                     
@@ -86,5 +83,14 @@ class DataStore {
             
             completion(currentForecast,nil)
         }
+    }
+    
+    func convertToFahrenheit(temp: Int) -> Int {
+        
+        var convertedInt:Int = 0
+        
+        convertedInt = Int(temp * 9/5 - 460)
+        
+        return convertedInt
     }
 }

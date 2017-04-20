@@ -57,7 +57,7 @@ class WeatherController: UIViewController {
             make.centerX.equalTo(currentTempLabel.snp.centerX)
             make.top.equalTo(currentTempLabel.snp.centerY).offset(40)
         }
-        conditionLabel.text = "Breezy"
+//        conditionLabel.text = "Breezy"
         conditionLabel.textColor = UIColor.black
         conditionLabel.textAlignment = .center
         conditionLabel.adjustsFontSizeToFitWidth = true
@@ -67,9 +67,9 @@ class WeatherController: UIViewController {
         self.view.addSubview(highTempLabel)
         highTempLabel.snp.makeConstraints { (make) in
             make.left.equalTo(currentTempLabel.snp.left)
-            make.top.equalTo(currentTempLabel.snp.bottom).offset(2)
+            make.centerY.equalTo(self.view.snp.centerY).offset(-100)
         }
-        highTempLabel.text = "72 High"
+//        highTempLabel.text = "72 High"
         highTempLabel.textColor = UIColor.black
         highTempLabel.textAlignment = .center
         highTempLabel.adjustsFontSizeToFitWidth = true
@@ -79,9 +79,9 @@ class WeatherController: UIViewController {
         self.view.addSubview(lowTempLabel)
         lowTempLabel.snp.makeConstraints { (make) in
             make.left.equalTo(highTempLabel.snp.right).offset(25)
-            make.top.equalTo(currentTempLabel.snp.bottom).offset(2)
+            make.centerY.equalTo(self.view.snp.centerY).offset(-100)
         }
-        lowTempLabel.text = "40 Low"
+//        lowTempLabel.text = "40 Low"
         lowTempLabel.textColor = UIColor.black
         lowTempLabel.textAlignment = .center
         lowTempLabel.adjustsFontSizeToFitWidth = true
@@ -91,9 +91,9 @@ class WeatherController: UIViewController {
         self.view.addSubview(windSpeedLabel)
         windSpeedLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view.snp.centerX)
-            make.top.equalTo(highTempLabel.snp.bottom).offset(20)
+            make.centerY.equalTo(self.view.snp.centerY).offset(-50)
         }
-        windSpeedLabel.text = "5 m/s Wind"
+//        windSpeedLabel.text = "5 m/s Wind"
         windSpeedLabel.textColor = UIColor.black
         windSpeedLabel.textAlignment = .center
         windSpeedLabel.adjustsFontSizeToFitWidth = true
@@ -103,7 +103,7 @@ class WeatherController: UIViewController {
         self.view.addSubview(dividerLineLabel)
         dividerLineLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view.snp.centerX)
-            make.top.equalTo(windSpeedLabel.snp.bottom).offset(100)
+            make.centerY.equalTo(self.view.snp.centerY).offset(30)
             make.width.equalTo(self.view.snp.width)
             make.height.equalTo(1)
         }
