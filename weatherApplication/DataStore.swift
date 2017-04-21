@@ -17,10 +17,10 @@ class DataStore {
     
 
     // Function to get weather from JSON and returning a Forecast object
-    func getWeather(city: String, completion: @escaping (Forecast?, NSError?) -> Void ) {
+    func getWeather(latitude: String, longitude: String, completion: @escaping (Forecast?, NSError?) -> Void ) {
         
         
-        APIClient.getForecast(city: city) { (JSON, error) in
+        APIClient.getForecast(latitude: latitude, longitude: longitude) { (JSON, error) in
             
             
             

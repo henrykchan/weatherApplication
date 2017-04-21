@@ -8,8 +8,9 @@
 
 import UIKit
 import SnapKit
+import CoreLocation
 
-class WeatherController: UIViewController {
+class WeatherController: UIViewController, CLLocationManagerDelegate {
     
     var forecast:Forecast!
     var currentTempLabel = UILabel()
@@ -21,14 +22,19 @@ class WeatherController: UIViewController {
     var backgroundImageView = UIImageView()
     let dividerLineLabel = UILabel()
     let sharedInstance = DataStore.sharedInstance
+    let locationManager = CLLocationManager()
+    var latitude = Double()
+    var longitude = Double()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         UIApplication.shared.statusBarStyle = .lightContent
         
+        setupLocationManager()
         createLayout()
         gettingWeather()
+        
         
     }
 
@@ -137,7 +143,8 @@ class WeatherController: UIViewController {
     }
     
     func gettingWeather() {
-        sharedInstance.getWeather(city: "brooklyn") { (forecast, error) in
+        
+        sharedInstance.getWeather(latitude: String(self.latitude), longitude: String(self.longitude)) { (forecast, error) in
             
             guard let unwrappedForecast = forecast else{return}
             
@@ -153,7 +160,47 @@ class WeatherController: UIViewController {
                 self.windSpeedLabel.text = String(describing: unwrappedForecast.windSpeed) + " m/s"
             }
         }
+//        sharedInstance.getWeather(city: "brooklyn") { (forecast, error) in
+//
+//            guard let unwrappedForecast = forecast else{return}
+//            
+//            if let error = error {
+//                print ("Oops looks like there is an error fetching forecast, Error:\(error)")
+//            }
+//            else {
+//                self.currentTempLabel.text = String(describing: unwrappedForecast.currentTemp) + "°"
+//                self.conditionLabel.text = (unwrappedForecast.condition).capitalized
+//                self.cityNameLabel.text = (unwrappedForecast.cityName).capitalized
+//                self.highTempLabel.text = "High: " + String(describing: unwrappedForecast.highTemp)
+//                self.lowTempLabel.text = "Low: " + String(describing: unwrappedForecast.lowTemp)
+//                self.windSpeedLabel.text = String(describing: unwrappedForecast.windSpeed) + " m/s"
+//            }
+//        }
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        
+            print("Oops unable to fetch coordinates, Error:\(error)")
+    
+    }
+    
+    func setupLocationManager() {
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        
+        locationManager.requestLocation()
+        self.latitude =  (locationManager.location?.coordinate.latitude)!
+        self.longitude = (locationManager.location?.coordinate.longitude)!
+    }
+    
 
 }
+
+
 

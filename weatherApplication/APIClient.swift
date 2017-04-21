@@ -11,9 +11,9 @@ import Alamofire
 
 struct APIClient {
     
-    static func getForecast(city: String, completion: @escaping ([String: Any]?, NSError?) -> Void) {
+    static func getForecast(latitude: String, longitude: String, completion: @escaping ([String: Any]?, NSError?) -> Void) {
         
-        let urlString =  "http://api.openweathermap.org/data/2.5/weather?q=\(city)&APPID=\(Secret.apiKey)"
+        let urlString =  "http://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&APPID=\(Secret.apiKey)"
         
         NetworkRequest.urlRequest(url: urlString, method: .get, parameters: nil) { (dataResponse) in
             
