@@ -53,13 +53,15 @@ class DataStore {
                 
                 // Setting high temperature
                 if let maxTemp = main["temp_max"] as? Int {
-                    currentForecast.highTemp = maxTemp
+                    let fahrenheit = self.convertToFahrenheit(temp: maxTemp)
+                    currentForecast.highTemp = fahrenheit
                     print(currentForecast.highTemp as Any)
                 }
                 
                 // Setting low temperature
                 if let minTemp = main["temp_min"] as? Int {
-                    currentForecast.lowTemp = minTemp
+                    let fahrenheit = self.convertToFahrenheit(temp: minTemp)
+                    currentForecast.lowTemp = fahrenheit
                 }
             }
             
@@ -85,6 +87,7 @@ class DataStore {
         }
     }
     
+    // Function to convert kelvin to fahrenheit
     func convertToFahrenheit(temp: Int) -> Int {
         
         var convertedInt:Int = 0

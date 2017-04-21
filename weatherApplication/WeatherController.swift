@@ -18,13 +18,14 @@ class WeatherController: UIViewController {
     var conditionLabel = UILabel()
     var cityNameLabel = UILabel()
     var windSpeedLabel = UILabel()
-    var backgroundImage = UIImageView()
+    var backgroundImageView = UIImageView()
     let dividerLineLabel = UILabel()
     let sharedInstance = DataStore.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIApplication.shared.statusBarStyle = .lightContent
         
         createLayout()
         gettingWeather()
@@ -35,18 +36,43 @@ class WeatherController: UIViewController {
         
         self.view.backgroundColor = UIColor.white
         
+        // backgroundImage constraints and settings
+        self.view.addSubview(backgroundImageView)
+        backgroundImageView.snp.makeConstraints { (make) in
+            make.top.equalTo(self.view.snp.top)
+            make.bottom.equalTo(self.view.snp.bottom)
+            make.left.equalTo(self.view.snp.left)
+            make.right.equalTo(self.view.snp.right)
+        }
+        backgroundImageView.contentMode = .scaleAspectFill
+        backgroundImageView.clipsToBounds = true
+        backgroundImageView.image = #imageLiteral(resourceName: "nightBG")
+        
+        // City Name Label constraints and settings
+        backgroundImageView.addSubview(cityNameLabel)
+        cityNameLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(self.view.snp.top).offset(50)
+            make.centerX.equalTo(self.view.snp.centerX)
+        }
+        
+        cityNameLabel.textColor = UIColor.white
+        cityNameLabel.textAlignment = .center
+        cityNameLabel.adjustsFontSizeToFitWidth = true
+        cityNameLabel.numberOfLines = 0
+        
+        
         // CurrentTemp Label constraints and settings
-        self.view.addSubview(currentTempLabel)
+        backgroundImageView.addSubview(currentTempLabel)
         currentTempLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view.snp.centerX)
             make.top.equalTo(self.view.snp.top).offset(100)
         }
 //        currentTempLabel.text = "66°"
         currentTempLabel.font = UIFont(name: "Avenir-Light", size: 100)
-        currentTempLabel.textColor = UIColor.black
+        currentTempLabel.textColor = UIColor.white
 //        currentTempLabel.baselineAdjustment = .alignCenters
         currentTempLabel.textAlignment = .center
-        currentTempLabel.backgroundColor = UIColor.blue
+//        currentTempLabel.backgroundColor = UIColor.blue
         currentTempLabel.adjustsFontSizeToFitWidth = true
         currentTempLabel.numberOfLines = 0
         currentTempLabel.lineBreakMode = .byWordWrapping
@@ -58,56 +84,56 @@ class WeatherController: UIViewController {
             make.top.equalTo(currentTempLabel.snp.centerY).offset(40)
         }
 //        conditionLabel.text = "Breezy"
-        conditionLabel.textColor = UIColor.black
+        conditionLabel.textColor = UIColor.white
         conditionLabel.textAlignment = .center
         conditionLabel.adjustsFontSizeToFitWidth = true
         conditionLabel.numberOfLines = 0
         
         // High Temp Label constraints and settings
-        self.view.addSubview(highTempLabel)
+        backgroundImageView.addSubview(highTempLabel)
         highTempLabel.snp.makeConstraints { (make) in
             make.left.equalTo(currentTempLabel.snp.left)
             make.centerY.equalTo(self.view.snp.centerY).offset(-100)
         }
 //        highTempLabel.text = "72 High"
-        highTempLabel.textColor = UIColor.black
+        highTempLabel.textColor = UIColor.white
         highTempLabel.textAlignment = .center
         highTempLabel.adjustsFontSizeToFitWidth = true
         highTempLabel.numberOfLines = 0
         
         // Low Temp Label constraints and settings
-        self.view.addSubview(lowTempLabel)
+        backgroundImageView.addSubview(lowTempLabel)
         lowTempLabel.snp.makeConstraints { (make) in
             make.left.equalTo(highTempLabel.snp.right).offset(25)
             make.centerY.equalTo(self.view.snp.centerY).offset(-100)
         }
 //        lowTempLabel.text = "40 Low"
-        lowTempLabel.textColor = UIColor.black
+        lowTempLabel.textColor = UIColor.white
         lowTempLabel.textAlignment = .center
         lowTempLabel.adjustsFontSizeToFitWidth = true
         lowTempLabel.numberOfLines = 0
         
         // Wind Speed Label constraints and settings
-        self.view.addSubview(windSpeedLabel)
+        backgroundImageView.addSubview(windSpeedLabel)
         windSpeedLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view.snp.centerX)
             make.centerY.equalTo(self.view.snp.centerY).offset(-50)
         }
 //        windSpeedLabel.text = "5 m/s Wind"
-        windSpeedLabel.textColor = UIColor.black
+        windSpeedLabel.textColor = UIColor.white
         windSpeedLabel.textAlignment = .center
         windSpeedLabel.adjustsFontSizeToFitWidth = true
         windSpeedLabel.numberOfLines = 0
         
         // Divider Label constraints and settings
-        self.view.addSubview(dividerLineLabel)
+        backgroundImageView.addSubview(dividerLineLabel)
         dividerLineLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view.snp.centerX)
             make.centerY.equalTo(self.view.snp.centerY).offset(30)
             make.width.equalTo(self.view.snp.width)
             make.height.equalTo(1)
         }
-        dividerLineLabel.backgroundColor = UIColor.black
+        dividerLineLabel.backgroundColor = UIColor.white
     }
     
     func gettingWeather() {
@@ -119,7 +145,12 @@ class WeatherController: UIViewController {
                 print ("Oops looks like there is an error fetching forecast, Error:\(error)")
             }
             else {
-                self.currentTempLabel.text = String(describing: unwrappedForecast.currentTemp)
+                self.currentTempLabel.text = String(describing: unwrappedForecast.currentTemp) + "°"
+                self.conditionLabel.text = (unwrappedForecast.condition).capitalized
+                self.cityNameLabel.text = (unwrappedForecast.cityName).capitalized
+                self.highTempLabel.text = "High: " + String(describing: unwrappedForecast.highTemp)
+                self.lowTempLabel.text = "Low: " + String(describing: unwrappedForecast.lowTemp)
+                self.windSpeedLabel.text = String(describing: unwrappedForecast.windSpeed) + " m/s"
             }
         }
     }
