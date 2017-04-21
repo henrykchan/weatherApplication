@@ -300,6 +300,7 @@
 				TargetAttributes = {
 					725FD7541E8DE96A004D6CCA = {
 						CreatedOnToolsVersion = 8.3;
+						DevelopmentTeam = S88CGU6C8H;
 						ProvisioningStyle = Automatic;
 					};
 					725FD76B1E8DE96A004D6CCA = {
@@ -658,6 +659,7 @@
 			baseConfigurationReference = B978B24555EC79207B54F590 /* Pods-weatherApplication.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = S88CGU6C8H;
 				INFOPLIST_FILE = weatherApplication/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = HenryC.weatherApplication;
@@ -671,6 +673,7 @@
 			baseConfigurationReference = EEF427A9FC490F5380F0DC99 /* Pods-weatherApplication.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = S88CGU6C8H;
 				INFOPLIST_FILE = weatherApplication/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = HenryC.weatherApplication;

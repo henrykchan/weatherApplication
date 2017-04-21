@@ -65,13 +65,19 @@ class DataStore {
                 }
             }
             
-           // Setting weather condition description
+           // Setting weather condition and icon
             if let weather = unwrappedJSON["weather"] as? [[String:Any]] {
                 for weatherAttributes in weather{
-                if let description = weatherAttributes["description"] as? String {
-                    currentForecast.condition = description
-                    print(currentForecast.condition as Any)
-                }
+                    
+                    // Setting condition
+                    if let description = weatherAttributes["description"] as? String {
+                        currentForecast.condition = description
+                        print(currentForecast.condition as Any)
+                    }
+                    
+                    if let id = weatherAttributes["id"] as? Int {
+                        currentForecast.weatherID = id
+                    }
                 }
             }
             
