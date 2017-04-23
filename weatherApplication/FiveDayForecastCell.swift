@@ -20,6 +20,8 @@ class FiveDayForecastCell: UICollectionViewCell, UICollectionViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        
+        contentView.layer.masksToBounds = true
 //        contentView.addSubview(blackOverLay)
 //        blackOverLay.snp.makeConstraints { (make) in
 //            make.bottom.equalTo(contentView.snp.bottom)
@@ -30,19 +32,20 @@ class FiveDayForecastCell: UICollectionViewCell, UICollectionViewDelegate {
         contentView.addSubview(dayOfWeekLabel)
         dayOfWeekLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView.snp.centerX)
-            make.top.equalTo(contentView.snp.top)
+            make.top.equalTo(contentView.snp.top).offset(5)
             make.width.equalTo(contentView.snp.width)
         }
         dayOfWeekLabel.text = "Mon"
         dayOfWeekLabel.textColor = .white
-        dayOfWeekLabel.font = UIFont(name: "Avenir-Light", size: 2)
+        dayOfWeekLabel.textAlignment = .center
+//        dayOfWeekLabel.font = UIFont(name: "Avenir-Light", size: 2)
         
         contentView.addSubview(weatherIDImageView)
-        contentView.snp.makeConstraints { (make) in
+        weatherIDImageView.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView.snp.centerX)
             make.top.equalTo(dayOfWeekLabel.snp.bottom)
-            make.width.equalTo(1)
-            make.height.equalTo(1)
+            make.width.equalTo(50)
+            make.height.equalTo(50)
         }
         weatherIDImageView.backgroundColor = .green
         
@@ -54,6 +57,7 @@ class FiveDayForecastCell: UICollectionViewCell, UICollectionViewDelegate {
         }
         highTempLabel.text = "70"
         highTempLabel.textColor = .white
+        highTempLabel.textAlignment = .center
         
         
         contentView.addSubview(lowTempLabel)
@@ -62,8 +66,9 @@ class FiveDayForecastCell: UICollectionViewCell, UICollectionViewDelegate {
             make.top.equalTo(highTempLabel.snp.bottom)
             make.width.equalTo(contentView.snp.width)
         }
-        lowTempLabel.text = "70"
+        lowTempLabel.text = "50"
         lowTempLabel.textColor = .white
+        lowTempLabel.textAlignment = .center
     }
     
     required init?(coder aDecoder: NSCoder) {

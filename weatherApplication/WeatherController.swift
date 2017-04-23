@@ -177,9 +177,9 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "basicCell", for: indexPath) as! FiveDayForecastCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "forecastCell", for: indexPath) as! FiveDayForecastCell
         cell.backgroundColor = .blue
-        cell.highTempLabel.text = "1"
+        print(cell.highTempLabel.text as Any)
         return cell
     }
     
@@ -199,7 +199,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         fiveDayForecastView.dataSource = self
         fiveDayForecastView.delegate = self
         
-        fiveDayForecastView.register(FiveDayForecastCell.self, forCellWithReuseIdentifier: "basicCell")
+        fiveDayForecastView.register(FiveDayForecastCell.self, forCellWithReuseIdentifier: "forecastCell")
         fiveDayForecastView.isUserInteractionEnabled = true
     }
     
