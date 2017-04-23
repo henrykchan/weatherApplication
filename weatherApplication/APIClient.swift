@@ -29,3 +29,6 @@ struct APIClient {
     }
     
 }
+
+
+//http://api.openweathermap.org/data/2.5/weather?lat=40.641078&lon=74.012268&APPID=76e80501f278a7d7c4b99b05eed3f228

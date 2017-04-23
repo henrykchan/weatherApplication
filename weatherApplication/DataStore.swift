@@ -77,6 +77,7 @@ class DataStore {
                     
                     if let id = weatherAttributes["id"] as? Int {
                         currentForecast.weatherID = id
+                        print(currentForecast.weatherID as Any)
                     }
                 }
             }

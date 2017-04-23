@@ -20,12 +20,13 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
     var cityNameLabel = UILabel()
     var windSpeedLabel = UILabel()
     var backgroundImageView = UIImageView()
-    var weatherIconImageView = UIImageView()
+    var weatherIDImageView = UIImageView()
     let dividerLineLabel = UILabel()
     let sharedInstance = DataStore.sharedInstance
     let locationManager = CLLocationManager()
     var latitude = Double()
     var longitude = Double()
+    var cityName = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +36,10 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
         setupLocationManager()
         createLayout()
         gettingWeather()
+        gettingCityNameBasedOnCoordinates()
+        
+        print(self.latitude)
+        print(self.longitude)
         
         
     }
@@ -99,6 +104,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
         highTempLabel.snp.makeConstraints { (make) in
             make.left.equalTo(currentTempLabel.snp.left)
             make.centerY.equalTo(self.view.snp.centerY).offset(-60)
+//            make.centerX.equalTo(self.view.snp.centerX)
         }
         highTempLabel.textColor = UIColor.white
         highTempLabel.textAlignment = .center
@@ -110,6 +116,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
         lowTempLabel.snp.makeConstraints { (make) in
             make.left.equalTo(highTempLabel.snp.right).offset(25)
             make.centerY.equalTo(self.view.snp.centerY).offset(-60)
+//            make.centerX.equalTo(self.view.snp.centerX)
         }
         lowTempLabel.textColor = UIColor.white
         lowTempLabel.textAlignment = .center
@@ -120,7 +127,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
         backgroundImageView.addSubview(windSpeedLabel)
         windSpeedLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view.snp.centerX)
-            make.centerY.equalTo(self.view.snp.centerY).offset(-30)
+            make.centerY.equalTo(self.view.snp.centerY).offset(-20)
         }
         windSpeedLabel.textColor = UIColor.white
         windSpeedLabel.textAlignment = .center
@@ -136,6 +143,18 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
             make.height.equalTo(1)
         }
         dividerLineLabel.backgroundColor = UIColor.white
+        
+        // weatherID imageview constraints and settings
+        backgroundImageView.addSubview(weatherIDImageView)
+        weatherIDImageView.snp.makeConstraints { (make) in
+            make.width.equalTo(50)
+            make.height.equalTo(50)
+            make.left.equalTo(currentTempLabel.snp.right).offset(5)
+            make.centerY.equalTo(currentTempLabel.snp.centerY)
+        }
+        weatherIDImageView.tintColor = .white
+//        weatherIDImageView.image = weatherIDImageView.image?.withRenderingMode(.alwaysTemplate)
+        
     }
     
     func gettingWeather() {
@@ -150,11 +169,12 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
             else {
                 self.currentTempLabel.text = String(describing: unwrappedForecast.currentTemp) + "°"
                 self.conditionLabel.text = (unwrappedForecast.condition).capitalized
-                self.cityNameLabel.text = (unwrappedForecast.cityName).capitalized
+//                self.cityNameLabel.text = (unwrappedForecast.cityName).capitalized
                 self.highTempLabel.text = "High: " + String(describing: unwrappedForecast.highTemp)
                 self.lowTempLabel.text = "Low: " + String(describing: unwrappedForecast.lowTemp)
                 self.windSpeedLabel.text = String(describing: unwrappedForecast.windSpeed) + " m/s"
-                self.weatherIconImageView.image = weatherImage(forecast: unwrappedForecast)
+                self.weatherIDImageView.image = self.weatherImage(forecast: unwrappedForecast).withRenderingMode(.alwaysTemplate)
+                
             }
         }
 //        sharedInstance.getWeather(city: "brooklyn") { (forecast, error) in
@@ -202,6 +222,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    // Function to return different images based on condition
     func weatherImage(forecast: Forecast) -> UIImage {
         
         switch forecast.weatherID {
@@ -229,7 +250,30 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    
+    func gettingCityNameBasedOnCoordinates() {
+        
+        let location = CLLocation(latitude: self.latitude, longitude: self.longitude)
+        
+        CLGeocoder().reverseGeocodeLocation(location) { (placemarks, error) in
+            
+            if error != nil {
+                print("Reverse geocoder failed with error, Error:\(String(describing: error?.localizedDescription))")
+            }
+            
+            guard let unwrappedPlacemarks = placemarks else {return}
+            
+            if unwrappedPlacemarks.count > 0 {
+                let placemark = unwrappedPlacemarks[0]
+                
+                //Setting city name label text from place mark locality using coordinates
+                self.cityNameLabel.text = placemark.locality
+            }
+            
+            else {
+                print("Problem with the data received from geocoder")
+            }
+        }
+    }
     
 
 }
