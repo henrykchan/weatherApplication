@@ -10,9 +10,9 @@ import UIKit
 import SnapKit
 import CoreLocation
 
-class WeatherController: UIViewController, CLLocationManagerDelegate {
+class WeatherController: UIViewController, CLLocationManagerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewFlowLayout {
     
-    var forecast:Forecast!
+    var forecast:Forecast?
     var currentTempLabel = UILabel()
     var highTempLabel = UILabel()
     var lowTempLabel = UILabel()
@@ -27,6 +27,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
     var latitude = Double()
     var longitude = Double()
     var cityName = String()
+    var fiveDayForecastView = UICollectionView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +38,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
         createLayout()
         gettingWeather()
         gettingCityNameBasedOnCoordinates()
+        setUpFiveDayForecastCell()
         
         print(self.latitude)
         print(self.longitude)
@@ -155,6 +157,46 @@ class WeatherController: UIViewController, CLLocationManagerDelegate {
         weatherIDImageView.tintColor = .white
 //        weatherIDImageView.image = weatherIDImageView.image?.withRenderingMode(.alwaysTemplate)
         
+        // Setup FiveDayForecast Collection View
+        backgroundImageView.addSubview(fiveDayForecastView)
+        fiveDayForecastView.snp.makeConstraints { (make) in
+            make.top.equalTo(dividerLineLabel.snp.bottom).offset(15)
+            make.width.equalTo(backgroundImageView.snp.width).dividedBy(5)
+            make.height.equalTo(70)
+        }
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "basicCell", for: indexPath) as! FiveDayForecastCell
+        
+        return cell
+    }
+    
+    func setUpFiveDayForecastCell() {
+        
+        let screenSize = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        let screenHeight = screenSize.height
+        
+        //setup Layout
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = UICollectionViewScrollDirection.horizontal
+        layout.itemSize = CGSize(width: screenWidth, height: screenHeight)
+        layout.minimumLineSpacing = 1
+        layout.minimumInteritemSpacing = 0
+        fiveDayForecastView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+        fiveDayForecastView.dataSource = self
+        fiveDayForecastView.delegate = self
+        
+        fiveDayForecastView.register(FiveDayForecastCell.self, forCellWithReuseIdentifier: "basicCell")
+        fiveDayForecastView.isUserInteractionEnabled = true
     }
     
     func gettingWeather() {
