@@ -10,9 +10,9 @@ import UIKit
 import SnapKit
 import CoreLocation
 
-class WeatherController: UIViewController, CLLocationManagerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewFlowLayout {
+class WeatherController: UIViewController, CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
-    var forecast:Forecast?
+    var forecast:Forecast!
     var currentTempLabel = UILabel()
     var highTempLabel = UILabel()
     var lowTempLabel = UILabel()
@@ -27,18 +27,19 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
     var latitude = Double()
     var longitude = Double()
     var cityName = String()
-    var fiveDayForecastView = UICollectionView()
+    var fiveDayForecastView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         UIApplication.shared.statusBarStyle = .lightContent
         
+        setUpFiveDayForecastCell()
         setupLocationManager()
         createLayout()
         gettingWeather()
         gettingCityNameBasedOnCoordinates()
-        setUpFiveDayForecastCell()
+        
         
         print(self.latitude)
         print(self.longitude)
@@ -160,30 +161,33 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         // Setup FiveDayForecast Collection View
         backgroundImageView.addSubview(fiveDayForecastView)
         fiveDayForecastView.snp.makeConstraints { (make) in
-            make.top.equalTo(dividerLineLabel.snp.bottom).offset(15)
-            make.width.equalTo(backgroundImageView.snp.width).dividedBy(5)
-            make.height.equalTo(70)
+            make.top.equalTo(dividerLineLabel.snp.bottom)
+            make.width.equalTo(backgroundImageView.snp.width)
+            make.bottom.equalTo(backgroundImageView.snp.bottom)
+            make.left.equalTo(backgroundImageView.snp.left)
         }
+        fiveDayForecastView.backgroundColor = .clear
         
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 1
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "basicCell", for: indexPath) as! FiveDayForecastCell
-        
+        cell.backgroundColor = .blue
+        cell.highTempLabel.text = "1"
         return cell
     }
     
     func setUpFiveDayForecastCell() {
         
         let screenSize = UIScreen.main.bounds
-        let screenWidth = screenSize.width
-        let screenHeight = screenSize.height
+        let screenWidth = screenSize.width / 5
+        let screenHeight = screenSize.height / 3
         
         //setup Layout
         let layout = UICollectionViewFlowLayout()

@@ -30,24 +30,26 @@ class FiveDayForecastCell: UICollectionViewCell, UICollectionViewDelegate {
         contentView.addSubview(dayOfWeekLabel)
         dayOfWeekLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView.snp.centerX)
-            make.top.equalTo(contentView.snp.top).offset(2)
+            make.top.equalTo(contentView.snp.top)
             make.width.equalTo(contentView.snp.width)
         }
         dayOfWeekLabel.text = "Mon"
+        dayOfWeekLabel.textColor = .white
+        dayOfWeekLabel.font = UIFont(name: "Avenir-Light", size: 2)
         
         contentView.addSubview(weatherIDImageView)
         contentView.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView.snp.centerX)
-            make.top.equalTo(dayOfWeekLabel.snp.bottom).offset(2)
-            make.width.equalTo(10)
-            make.height.equalTo(10)
+            make.top.equalTo(dayOfWeekLabel.snp.bottom)
+            make.width.equalTo(1)
+            make.height.equalTo(1)
         }
         weatherIDImageView.backgroundColor = .green
         
         contentView.addSubview(highTempLabel)
         highTempLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView.snp.centerX)
-            make.top.equalTo(weatherIDImageView.snp.bottom).offset(2)
+            make.top.equalTo(weatherIDImageView.snp.bottom)
             make.width.equalTo(contentView.snp.width)
         }
         highTempLabel.text = "70"
@@ -57,7 +59,7 @@ class FiveDayForecastCell: UICollectionViewCell, UICollectionViewDelegate {
         contentView.addSubview(lowTempLabel)
         lowTempLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView.snp.centerX)
-            make.top.equalTo(highTempLabel.snp.bottom).offset(2)
+            make.top.equalTo(highTempLabel.snp.bottom)
             make.width.equalTo(contentView.snp.width)
         }
         lowTempLabel.text = "70"
