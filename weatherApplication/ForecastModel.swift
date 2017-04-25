@@ -17,6 +17,15 @@ struct Forecast {
     var cityName = String()
     var windSpeed = Int()
     var weatherID = Int()
+    
+//    var currentTemp: Int?
+//    var highTemp: Int?
+//    var lowTemp: Int?
+//    var condition: String?
+//    var cityName: String?
+//    var windSpeed: Int?
+//    var weatherID: Int?
+    
 //    var cloud: Int?
 //    var sunrise: Int?
 //    var sunset: Int?
@@ -51,6 +60,8 @@ struct Forecast {
         if let weatherIDDict = dictionary["id"] as? Int {
             self.weatherID = weatherIDDict
         }
+        
+    
 //        if let cloudDict = dictionary["cloud"] as? Int {
 //            cloud = cloudDict
 //        }

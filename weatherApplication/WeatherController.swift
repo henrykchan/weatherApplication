@@ -13,7 +13,7 @@ import CoreLocation
 class WeatherController: UIViewController, CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
     var forecast:Forecast!
-    var forecasts: [Forecast] = []
+    var forecasts = [Forecast]()
     var currentTempLabel = UILabel()
     var highTempLabel = UILabel()
     var lowTempLabel = UILabel()
@@ -44,8 +44,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         gettingCityNameBasedOnCoordinates()
         
         
-//        print(self.latitude)
-//        print(self.longitude)
+       
         
         
     }
@@ -175,13 +174,17 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 5
+        return forecasts.count
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+//        gettingFiveDayWeather()
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "forecastCell", for: indexPath) as! FiveDayForecastCell
         cell.backgroundColor = .blue
+        
 //        print(cell.highTempLabel.text as Any)
         return cell
     }
@@ -230,18 +233,26 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
     
     func gettingFiveDayWeather () {
         
+//        self.forecasts.removeAll()
+        
         sharedInstance.getFiveDayWeather(latitude: String(self.latitude), longitude: String(self.longitude)) { (theForecasts, error) in
             
-            guard let unwrappedForecasts = theForecasts else{return}
+//            guard let unwrappedForecasts = theForecasts else{return}
             
             if let error = error {
                 print ("Oops looks like there is an error fetching forecasts, Error:\(error)")
             }
                 
             else {
+                
+                guard let unwrappedForecasts = theForecasts else{return}
+                
                 self.forecasts = unwrappedForecasts
+                print(self.forecasts)
             }
         }
+        
+//        print(self.forecasts)
 //        sharedInstance.getWeather(city: "brooklyn") { (forecast, error) in
 //
 //            guard let unwrappedForecast = forecast else{return}

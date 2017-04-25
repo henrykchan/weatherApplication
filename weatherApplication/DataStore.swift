@@ -107,6 +107,9 @@ class DataStore {
             var forecast = Forecast(dictionary: unwrappedJSON)
             var forecasts: [Forecast] = []
             
+            
+            
+            
             guard let list = unwrappedJSON["list"] as? [[String:Any]] else{return}
             
             for eachTemp in list {
@@ -139,9 +142,11 @@ class DataStore {
                 }
                 
                 forecasts.append(forecast)
-//                dump(forecasts)
+                
             }
             
+            forecasts.remove(at: 0)
+        
             completion(forecasts, nil)
         }
     }
