@@ -174,6 +174,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
+//        print(forecasts.count)
         return forecasts.count
         
     }
@@ -184,6 +185,14 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "forecastCell", for: indexPath) as! FiveDayForecastCell
         cell.backgroundColor = .blue
+        
+        for (index, eachForecast) in forecasts.enumerated() {
+            
+            if index > 0 {
+                cell.highTempLabel.text = String(eachForecast.highTemp)
+                cell.lowTempLabel.text = String(eachForecast.lowTemp)
+            }
+        }
         
 //        print(cell.highTempLabel.text as Any)
         return cell
@@ -248,27 +257,11 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
                 guard let unwrappedForecasts = theForecasts else{return}
                 
                 self.forecasts = unwrappedForecasts
-                print(self.forecasts)
+                self.fiveDayForecastView.reloadData()
+//                print(self.forecasts)
             }
         }
         
-//        print(self.forecasts)
-//        sharedInstance.getWeather(city: "brooklyn") { (forecast, error) in
-//
-//            guard let unwrappedForecast = forecast else{return}
-//            
-//            if let error = error {
-//                print ("Oops looks like there is an error fetching forecast, Error:\(error)")
-//            }
-//            else {
-//                self.currentTempLabel.text = String(describing: unwrappedForecast.currentTemp) + "°"
-//                self.conditionLabel.text = (unwrappedForecast.condition).capitalized
-//                self.cityNameLabel.text = (unwrappedForecast.cityName).capitalized
-//                self.highTempLabel.text = "High: " + String(describing: unwrappedForecast.highTemp)
-//                self.lowTempLabel.text = "Low: " + String(describing: unwrappedForecast.lowTemp)
-//                self.windSpeedLabel.text = String(describing: unwrappedForecast.windSpeed) + " m/s"
-//            }
-//        }
     }
     
     // Fuction for CLLocationManager delegates
@@ -353,6 +346,25 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
     
 
 }
+
+
+//        print(self.forecasts)
+//        sharedInstance.getWeather(city: "brooklyn") { (forecast, error) in
+//
+//            guard let unwrappedForecast = forecast else{return}
+//
+//            if let error = error {
+//                print ("Oops looks like there is an error fetching forecast, Error:\(error)")
+//            }
+//            else {
+//                self.currentTempLabel.text = String(describing: unwrappedForecast.currentTemp) + "°"
+//                self.conditionLabel.text = (unwrappedForecast.condition).capitalized
+//                self.cityNameLabel.text = (unwrappedForecast.cityName).capitalized
+//                self.highTempLabel.text = "High: " + String(describing: unwrappedForecast.highTemp)
+//                self.lowTempLabel.text = "Low: " + String(describing: unwrappedForecast.lowTemp)
+//                self.windSpeedLabel.text = String(describing: unwrappedForecast.windSpeed) + " m/s"
+//            }
+//        }
 
 
 

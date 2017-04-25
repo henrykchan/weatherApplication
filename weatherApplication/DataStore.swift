@@ -35,27 +35,21 @@ class DataStore {
             // Setting City Name
             if let cityName = unwrappedJSON["name"] as? String {
                 currentForecast.cityName = cityName
-//                print(cityName)
-//                print(currentForecast.cityName)
             }
             
             // Setting temperature
             if let main = unwrappedJSON["main"] as? [String:Any] {
                 // Setting current temperature
                 if let currentTemp = main["temp"] as? Int {
-//                    print(currentTemp)
+
                     let fahrenheit = self.convertToFahrenheit(temp: currentTemp)
                     currentForecast.currentTemp = fahrenheit
-//                    print("We're HEREEE!!!!!!!")
-//                    print(currentForecast.currentTemp as Any)
-                    
                 }
                 
                 // Setting high temperature
                 if let maxTemp = main["temp_max"] as? Int {
                     let fahrenheit = self.convertToFahrenheit(temp: maxTemp)
                     currentForecast.highTemp = fahrenheit
-//                    print(currentForecast.highTemp as Any)
                 }
                 
                 // Setting low temperature
@@ -72,12 +66,12 @@ class DataStore {
                     // Setting condition
                     if let description = weatherAttributes["description"] as? String {
                         currentForecast.condition = description
-//                        print(currentForecast.condition as Any)
+
                     }
                     
                     if let id = weatherAttributes["id"] as? Int {
                         currentForecast.weatherID = id
-//                        print(currentForecast.weatherID as Any)
+
                     }
                 }
             }
@@ -86,7 +80,7 @@ class DataStore {
             if let wind = unwrappedJSON["wind"] as? [String:Any] {
                 if let windSpeed = wind["speed"] as? Int {
                     currentForecast.windSpeed = windSpeed
-//                    print(currentForecast.windSpeed as Any)
+
                 }
             }
             
@@ -107,7 +101,14 @@ class DataStore {
             var forecast = Forecast(dictionary: unwrappedJSON)
             var forecasts: [Forecast] = []
             
+            guard let city = unwrappedJSON ["city"] as? [String:Any] else{return}
             
+            if let cityName = city["name"] as? String {
+                forecast.cityName = cityName
+                print("cityName:\(forecast.cityName)")
+                
+                
+            }
             
             
             guard let list = unwrappedJSON["list"] as? [[String:Any]] else{return}
@@ -115,20 +116,26 @@ class DataStore {
             for eachTemp in list {
                 
                 if let temp = eachTemp["temp"] as? [String:Any] {
-//                    print(temp)
+                    
+                    if let dayTemp = temp["day"] as? Int {
+                        let fahrenheit = self.convertToFahrenheit(temp: dayTemp)
+                        forecast.currentTemp = fahrenheit
+                    }
                     
                     if let maxTemp = temp["max"] as? Int {
                         let fahrenheit = self.convertToFahrenheit(temp: maxTemp)
                         forecast.highTemp = fahrenheit
-//                                                    print(maxTemp)
                     }
                     
                     if let minTemp = temp["min"] as? Int {
                         let fahrenheit = self.convertToFahrenheit(temp: minTemp)
                         forecast.lowTemp = fahrenheit
-//                            print(forecast.lowTemp)
                     }
-                    
+                }
+                
+                if let windSpeed = eachTemp["speed"] as? Int {
+                    forecast.windSpeed = windSpeed
+//                    print("Wind:\(forecast.windSpeed)")
                 }
                 
                 if let weather = eachTemp["weather"] as? [[String:Any]] {
@@ -138,6 +145,10 @@ class DataStore {
                         if let id = weatherAttributes["id"] as? Int {
                             forecast.weatherID = id
                         }
+                        
+                        if let description = weatherAttributes["description"] as? String {
+                            forecast.condition = description
+                        }
                     }
                 }
                 
@@ -145,7 +156,7 @@ class DataStore {
                 
             }
             
-            forecasts.remove(at: 0)
+//            forecasts.remove(at: 0)
         
             completion(forecasts, nil)
         }
