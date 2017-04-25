@@ -35,19 +35,19 @@ class DataStore {
             // Setting City Name
             if let cityName = unwrappedJSON["name"] as? String {
                 currentForecast.cityName = cityName
-                print(cityName)
-                print(currentForecast.cityName)
+//                print(cityName)
+//                print(currentForecast.cityName)
             }
             
             // Setting temperature
             if let main = unwrappedJSON["main"] as? [String:Any] {
                 // Setting current temperature
                 if let currentTemp = main["temp"] as? Int {
-                    print(currentTemp)
+//                    print(currentTemp)
                     let fahrenheit = self.convertToFahrenheit(temp: currentTemp)
                     currentForecast.currentTemp = fahrenheit
-                    print("We're HEREEE!!!!!!!")
-                    print(currentForecast.currentTemp as Any)
+//                    print("We're HEREEE!!!!!!!")
+//                    print(currentForecast.currentTemp as Any)
                     
                 }
                 
@@ -55,7 +55,7 @@ class DataStore {
                 if let maxTemp = main["temp_max"] as? Int {
                     let fahrenheit = self.convertToFahrenheit(temp: maxTemp)
                     currentForecast.highTemp = fahrenheit
-                    print(currentForecast.highTemp as Any)
+//                    print(currentForecast.highTemp as Any)
                 }
                 
                 // Setting low temperature
@@ -72,12 +72,12 @@ class DataStore {
                     // Setting condition
                     if let description = weatherAttributes["description"] as? String {
                         currentForecast.condition = description
-                        print(currentForecast.condition as Any)
+//                        print(currentForecast.condition as Any)
                     }
                     
                     if let id = weatherAttributes["id"] as? Int {
                         currentForecast.weatherID = id
-                        print(currentForecast.weatherID as Any)
+//                        print(currentForecast.weatherID as Any)
                     }
                 }
             }
@@ -86,11 +86,63 @@ class DataStore {
             if let wind = unwrappedJSON["wind"] as? [String:Any] {
                 if let windSpeed = wind["speed"] as? Int {
                     currentForecast.windSpeed = windSpeed
-                    print(currentForecast.windSpeed as Any)
+//                    print(currentForecast.windSpeed as Any)
                 }
             }
             
             completion(currentForecast,nil)
+        }
+    }
+    
+    func getFiveDayWeather(latitude: String, longitude: String, completion: @escaping ([Forecast]?, NSError?) -> Void ) {
+        
+        APIClient.getFiveDayForecast(latitude: latitude, longitude: longitude) { (JSON, error) in
+            
+            guard let unwrappedJSON = JSON
+                else {
+                    completion (nil,error)
+                    return
+            }
+            
+            var forecast = Forecast(dictionary: unwrappedJSON)
+            var forecasts: [Forecast] = []
+            
+            guard let list = unwrappedJSON["list"] as? [[String:Any]] else{return}
+            
+            for eachTemp in list {
+                
+                if let temp = eachTemp["temp"] as? [String:Any] {
+//                    print(temp)
+                    
+                    if let maxTemp = temp["max"] as? Int {
+                        let fahrenheit = self.convertToFahrenheit(temp: maxTemp)
+                        forecast.highTemp = fahrenheit
+//                                                    print(maxTemp)
+                    }
+                    
+                    if let minTemp = temp["min"] as? Int {
+                        let fahrenheit = self.convertToFahrenheit(temp: minTemp)
+                        forecast.lowTemp = fahrenheit
+//                            print(forecast.lowTemp)
+                    }
+                    
+                }
+                
+                if let weather = eachTemp["weather"] as? [[String:Any]] {
+                    
+                    for weatherAttributes in weather {
+                        
+                        if let id = weatherAttributes["id"] as? Int {
+                            forecast.weatherID = id
+                        }
+                    }
+                }
+                
+                forecasts.append(forecast)
+//                dump(forecasts)
+            }
+            
+            completion(forecasts, nil)
         }
     }
     

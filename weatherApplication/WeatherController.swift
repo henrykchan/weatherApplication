@@ -13,6 +13,7 @@ import CoreLocation
 class WeatherController: UIViewController, CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
     var forecast:Forecast!
+    var forecasts: [Forecast] = []
     var currentTempLabel = UILabel()
     var highTempLabel = UILabel()
     var lowTempLabel = UILabel()
@@ -34,15 +35,17 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         
         UIApplication.shared.statusBarStyle = .lightContent
         
+        
         setUpFiveDayForecastCell()
         setupLocationManager()
         createLayout()
         gettingWeather()
+        gettingFiveDayWeather()
         gettingCityNameBasedOnCoordinates()
         
         
-        print(self.latitude)
-        print(self.longitude)
+//        print(self.latitude)
+//        print(self.longitude)
         
         
     }
@@ -179,7 +182,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "forecastCell", for: indexPath) as! FiveDayForecastCell
         cell.backgroundColor = .blue
-        print(cell.highTempLabel.text as Any)
+//        print(cell.highTempLabel.text as Any)
         return cell
     }
     
@@ -221,6 +224,22 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
                 self.windSpeedLabel.text = String(describing: unwrappedForecast.windSpeed) + " m/s"
                 self.weatherIDImageView.image = self.weatherImage(forecast: unwrappedForecast).withRenderingMode(.alwaysTemplate)
                 
+            }
+        }
+    }
+    
+    func gettingFiveDayWeather () {
+        
+        sharedInstance.getFiveDayWeather(latitude: String(self.latitude), longitude: String(self.longitude)) { (theForecasts, error) in
+            
+            guard let unwrappedForecasts = theForecasts else{return}
+            
+            if let error = error {
+                print ("Oops looks like there is an error fetching forecasts, Error:\(error)")
+            }
+                
+            else {
+                self.forecasts = unwrappedForecasts
             }
         }
 //        sharedInstance.getWeather(city: "brooklyn") { (forecast, error) in

@@ -55,7 +55,7 @@ class FiveDayForecastCell: UICollectionViewCell, UICollectionViewDelegate {
             make.top.equalTo(weatherIDImageView.snp.bottom)
             make.width.equalTo(contentView.snp.width)
         }
-        highTempLabel.text = "70"
+//        highTempLabel.text = "70"
         highTempLabel.textColor = .white
         highTempLabel.textAlignment = .center
         
@@ -66,7 +66,7 @@ class FiveDayForecastCell: UICollectionViewCell, UICollectionViewDelegate {
             make.top.equalTo(highTempLabel.snp.bottom)
             make.width.equalTo(contentView.snp.width)
         }
-        lowTempLabel.text = "50"
+//        lowTempLabel.text = "50"
         lowTempLabel.textColor = .white
         lowTempLabel.textAlignment = .center
     }

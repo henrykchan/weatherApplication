@@ -13,7 +13,24 @@ struct APIClient {
     
     static func getForecast(latitude: String, longitude: String, completion: @escaping ([String: Any]?, NSError?) -> Void) {
         
-        let urlString =  "http://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&APPID=\(Secret.apiKey)"
+        let urlString =  "http://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(Secret.apiKey)"
+        
+        NetworkRequest.urlRequest(url: urlString, method: .get, parameters: nil) { (dataResponse) in
+            
+            guard let JSON = dataResponse.result.value
+                else {
+                    completion(nil, dataResponse.result.error as NSError?)
+                    return
+            }
+            
+            completion(JSON as? [String:Any] , nil)
+        }
+        
+    }
+    
+    static func getFiveDayForecast(latitude: String, longitude: String, completion: @escaping ([String: Any]?, NSError?) -> Void) {
+        
+        let urlString = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=\(latitude)&lon=\(longitude)&cnt=6&appid=\(Secret.apiKey)"
         
         NetworkRequest.urlRequest(url: urlString, method: .get, parameters: nil) { (dataResponse) in
             
@@ -30,5 +47,5 @@ struct APIClient {
     
 }
 
-
 //http://api.openweathermap.org/data/2.5/weather?lat=40.641078&lon=74.012268&APPID=76e80501f278a7d7c4b99b05eed3f228
+
