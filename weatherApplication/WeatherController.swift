@@ -39,7 +39,6 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         setUpFiveDayForecastCell()
         setupLocationManager()
         createLayout()
-        gettingWeather()
         gettingFiveDayWeather()
         gettingCityNameBasedOnCoordinates()
         
@@ -218,35 +217,10 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         fiveDayForecastView.isUserInteractionEnabled = true
     }
     
-    func gettingWeather() {
-        
-        sharedInstance.getWeather(latitude: String(self.latitude), longitude: String(self.longitude)) { (forecast, error) in
-            
-            guard let unwrappedForecast = forecast else{return}
-            
-            if let error = error {
-                print ("Oops looks like there is an error fetching forecast, Error:\(error)")
-            }
-            else {
-                self.currentTempLabel.text = String(describing: unwrappedForecast.currentTemp) + "°"
-                self.conditionLabel.text = (unwrappedForecast.condition).capitalized
-//                self.cityNameLabel.text = (unwrappedForecast.cityName).capitalized
-                self.highTempLabel.text = "High: " + String(describing: unwrappedForecast.highTemp)
-                self.lowTempLabel.text = "Low: " + String(describing: unwrappedForecast.lowTemp)
-                self.windSpeedLabel.text = String(describing: unwrappedForecast.windSpeed) + " m/s"
-                self.weatherIDImageView.image = self.weatherImage(forecast: unwrappedForecast).withRenderingMode(.alwaysTemplate)
-                
-            }
-        }
-    }
     
     func gettingFiveDayWeather () {
         
-//        self.forecasts.removeAll()
-        
         sharedInstance.getFiveDayWeather(latitude: String(self.latitude), longitude: String(self.longitude)) { (theForecasts, error) in
-            
-//            guard let unwrappedForecasts = theForecasts else{return}
             
             if let error = error {
                 print ("Oops looks like there is an error fetching forecasts, Error:\(error)")
@@ -257,8 +231,18 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
                 guard let unwrappedForecasts = theForecasts else{return}
                 
                 self.forecasts = unwrappedForecasts
+                
+                let firstForecast = self.forecasts[0]
+                
+                self.currentTempLabel.text = String(describing: firstForecast.currentTemp) + "°"
+                self.conditionLabel.text = (firstForecast.condition).capitalized
+                self.highTempLabel.text = "High: " + String(describing: firstForecast.highTemp)
+                self.lowTempLabel.text = "Low: " + String(describing: firstForecast.lowTemp)
+                self.windSpeedLabel.text = String(describing: firstForecast.windSpeed) + " m/s"
+                self.weatherIDImageView.image = self.weatherImage(forecast: firstForecast).withRenderingMode(.alwaysTemplate)
+                
                 self.fiveDayForecastView.reloadData()
-//                print(self.forecasts)
+
             }
         }
         

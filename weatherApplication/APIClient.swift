@@ -11,23 +11,6 @@ import Alamofire
 
 struct APIClient {
     
-    static func getForecast(latitude: String, longitude: String, completion: @escaping ([String: Any]?, NSError?) -> Void) {
-        
-        let urlString =  "http://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(Secret.apiKey)"
-        
-        NetworkRequest.urlRequest(url: urlString, method: .get, parameters: nil) { (dataResponse) in
-            
-            guard let JSON = dataResponse.result.value
-                else {
-                    completion(nil, dataResponse.result.error as NSError?)
-                    return
-            }
-            
-            completion(JSON as? [String:Any] , nil)
-        }
-        
-    }
-    
     static func getFiveDayForecast(latitude: String, longitude: String, completion: @escaping ([String: Any]?, NSError?) -> Void) {
         
         let urlString = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=\(latitude)&lon=\(longitude)&cnt=6&appid=\(Secret.apiKey)"
