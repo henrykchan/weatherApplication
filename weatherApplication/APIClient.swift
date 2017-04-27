@@ -13,7 +13,7 @@ struct APIClient {
     
     static func getFiveDayForecast(latitude: String, longitude: String, completion: @escaping ([String: Any]?, NSError?) -> Void) {
         
-        let urlString = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=\(latitude)&lon=\(longitude)&cnt=6&appid=\(Secret.apiKey)"
+        let urlString = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=\(latitude)&lon=\(longitude)&cnt=7&appid=\(Secret.apiKey)"
         
         NetworkRequest.urlRequest(url: urlString, method: .get, parameters: nil) { (dataResponse) in
             

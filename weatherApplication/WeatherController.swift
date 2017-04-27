@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import CoreLocation
 
-class WeatherController: UIViewController, CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+class WeatherController: UIViewController, CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     
     var forecast:Forecast!
     var forecasts = [Forecast]()
@@ -22,28 +22,29 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
     var windSpeedLabel = UILabel()
     var backgroundImageView = UIImageView()
     var weatherIDImageView = UIImageView()
-    let dividerLineLabel = UILabel()
+    let firstDividerLineLabel = UILabel()
+    let secondDividerLineLabel = UILabel()
+    let scrollViewForecast = UIScrollView()
     let sharedInstance = DataStore.sharedInstance
     let locationManager = CLLocationManager()
     var latitude = Double()
     var longitude = Double()
     var cityName = String()
     var fiveDayForecastView: UICollectionView!
+    var currentDayOfTheWeek = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         UIApplication.shared.statusBarStyle = .lightContent
         
-        
         setUpFiveDayForecastCell()
-        setupLocationManager()
         createLayout()
+        setupLocationManager()
         gettingFiveDayWeather()
         gettingCityNameBasedOnCoordinates()
         
         
-       
         
         
     }
@@ -138,16 +139,6 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         windSpeedLabel.adjustsFontSizeToFitWidth = true
         windSpeedLabel.numberOfLines = 0
         
-        // Divider Label constraints and settings
-        backgroundImageView.addSubview(dividerLineLabel)
-        dividerLineLabel.snp.makeConstraints { (make) in
-            make.centerX.equalTo(self.view.snp.centerX)
-            make.centerY.equalTo(self.view.snp.centerY).offset(30)
-            make.width.equalTo(self.view.snp.width)
-            make.height.equalTo(1)
-        }
-        dividerLineLabel.backgroundColor = UIColor.white
-        
         // weatherID imageview constraints and settings
         backgroundImageView.addSubview(weatherIDImageView)
         weatherIDImageView.snp.makeConstraints { (make) in
@@ -157,43 +148,88 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
             make.centerY.equalTo(currentTempLabel.snp.centerY)
         }
         weatherIDImageView.tintColor = .white
-//        weatherIDImageView.image = weatherIDImageView.image?.withRenderingMode(.alwaysTemplate)
+        
+        //Setup scroll view
+//        backgroundImageView.addSubview(scrollViewForecast)
+//        scrollViewForecast.snp.makeConstraints { (make) in
+//            make.top.equalTo(self.view.snp.centerY).offset(90)
+//            make.width.equalTo(backgroundImageView.snp.width).offset(-(backgroundImageView.frame.width / 5))
+//            make.bottom.equalTo(backgroundImageView.snp.bottom)
+//            make.left.equalTo(backgroundImageView.snp.left)
+//        }
+//        scrollViewForecast.sizeToFit()
+//        scrollViewForecast.isScrollEnabled = true
+//        scrollViewForecast.showsHorizontalScrollIndicator = true
+////        scrollViewForecast.contentSize = fiveDayForecastView.frame.size
+////        print(scrollViewForecast.contentSize)
         
         // Setup FiveDayForecast Collection View
         backgroundImageView.addSubview(fiveDayForecastView)
         fiveDayForecastView.snp.makeConstraints { (make) in
-            make.top.equalTo(dividerLineLabel.snp.bottom)
-            make.width.equalTo(backgroundImageView.snp.width)
-            make.bottom.equalTo(backgroundImageView.snp.bottom)
-            make.left.equalTo(backgroundImageView.snp.left)
+//            make.top.equalTo(self.view.snp.centerY).offset(90)
+            make.right.equalTo(self.view.snp.right)
+            make.bottom.equalTo(self.view.snp.bottom)
+            make.left.equalTo(self.view.snp.left)
+            make.top.equalTo(self.view.snp.centerY).offset(90)
         }
-        fiveDayForecastView.backgroundColor = .clear
+        fiveDayForecastView.backgroundColor = .blue
+
+        
+        //Divider Label constraints and settings
+        //First Divider
+        backgroundImageView.addSubview(firstDividerLineLabel)
+        firstDividerLineLabel.snp.makeConstraints { (make) in
+            make.centerX.equalTo(self.view.snp.centerX)
+            make.bottom.equalTo(fiveDayForecastView.snp.top)
+            make.width.equalTo(self.view.snp.width)
+            make.height.equalTo(1)
+        }
+        firstDividerLineLabel.backgroundColor = UIColor.white
+        
+        //Second Divider
+        backgroundImageView.addSubview(secondDividerLineLabel)
+        secondDividerLineLabel.snp.makeConstraints { (make) in
+            make.centerX.equalTo(self.view.snp.centerX)
+            make.bottom.equalTo(firstDividerLineLabel.snp.top).offset(-10)
+            make.width.equalTo(self.view.snp.width)
+            make.height.equalTo(1)
+        }
+        secondDividerLineLabel.backgroundColor = UIColor.white
+        
         
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-//        print(forecasts.count)
+        print("This is the count \(forecasts.count)")
+
         return forecasts.count
+      
         
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-//        gettingFiveDayWeather()
+
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "forecastCell", for: indexPath) as! FiveDayForecastCell
-        cell.backgroundColor = .blue
         
-        for (index, eachForecast) in forecasts.enumerated() {
-            
-            if index > 0 {
-                cell.highTempLabel.text = String(eachForecast.highTemp)
-                cell.lowTempLabel.text = String(eachForecast.lowTemp)
-            }
-        }
+        var newForecast = self.forecasts
+        newForecast.remove(at: 0)
         
-//        print(cell.highTempLabel.text as Any)
+        cell.highTempLabel.text = String(newForecast[indexPath.row].highTemp)
+        cell.lowTempLabel.text = String(newForecast[indexPath.row].lowTemp)
+        cell.weatherIDImageView.image = self.weatherImage(forecast: newForecast[indexPath.row]).withRenderingMode(.alwaysTemplate)
+        cell.dayOfWeekLabel.text = self.getRestOfTheWeek()[indexPath.row]
+        
+//        cell.backgroundColor = .blue
+        
+        
+
+        
+        
+
+        
         return cell
     }
     
@@ -201,11 +237,11 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width / 5
-        let screenHeight = screenSize.height / 3
+        let screenHeight = screenSize.height / 3.5
         
         //setup Layout
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = UICollectionViewScrollDirection.horizontal
+        layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: screenWidth, height: screenHeight)
         layout.minimumLineSpacing = 1
         layout.minimumInteritemSpacing = 0
@@ -215,6 +251,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         
         fiveDayForecastView.register(FiveDayForecastCell.self, forCellWithReuseIdentifier: "forecastCell")
         fiveDayForecastView.isUserInteractionEnabled = true
+
     }
     
     
@@ -242,6 +279,8 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
                 self.weatherIDImageView.image = self.weatherImage(forecast: firstForecast).withRenderingMode(.alwaysTemplate)
                 
                 self.fiveDayForecastView.reloadData()
+                
+                dump(self.forecasts)
 
             }
         }
@@ -300,6 +339,49 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
             return #imageLiteral(resourceName: "hail")
         default:
             return #imageLiteral(resourceName: "question")
+        }
+    }
+    
+//    func dayOfWeek() -> String {
+//        
+//        let currentDay = NSDate()
+//        
+//        
+//    }
+    func getDayOfWeek()->Int {
+        
+        let todayDate = NSDate()
+        let myCalendar = NSCalendar(calendarIdentifier: .gregorian)
+        
+        guard let unrappedCalandar = myCalendar else{return 1}
+        
+        let myComponents = unrappedCalandar.components(.weekday, from: todayDate as Date)
+        let weekDay = myComponents.weekday
+        
+        guard let unwrappedWeekDay = weekDay else {return 1}
+        
+        
+        
+        return unwrappedWeekDay
+    }
+    
+    func getRestOfTheWeek() -> [String] {
+        
+        switch getDayOfWeek() {
+        case 1:
+            return ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+        case 2:
+            return ["Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        case 3:
+            return ["Wed", "Thu", "Fri", "Sat", "Sun", "Mon"]
+        case 4:
+            return ["Thu", "Fri", "Sat", "Sun", "Mon", "Tues"]
+        case 5:
+            return ["Fri", "Sat", "Sun", "Mon", "Tue", "Wed"]
+        case 6:
+            return ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu"]
+        default:
+            return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri"]
         }
     }
     
