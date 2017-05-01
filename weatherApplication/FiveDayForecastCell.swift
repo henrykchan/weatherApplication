@@ -8,9 +8,9 @@
 
 import UIKit
 
-class FiveDayForecastCell: UICollectionViewCell, UICollectionViewDelegate {
+class FiveDayForecastCell: UICollectionViewCell {
     
-    var forecast: Forecast?
+
     var weatherIDImageView = UIImageView()
     var highTempLabel = UILabel()
     var lowTempLabel = UILabel()
@@ -21,7 +21,7 @@ class FiveDayForecastCell: UICollectionViewCell, UICollectionViewDelegate {
         super.init(frame: frame)
         
         
-        contentView.layer.masksToBounds = true
+//        contentView.layer.masksToBounds = true
 //        contentView.addSubview(blackOverLay)
 //        blackOverLay.snp.makeConstraints { (make) in
 //            make.bottom.equalTo(contentView.snp.bottom)
@@ -67,11 +67,15 @@ class FiveDayForecastCell: UICollectionViewCell, UICollectionViewDelegate {
             make.width.equalTo(contentView.snp.width)
         }
 //        lowTempLabel.text = "50"
-        lowTempLabel.textColor = .white
+        lowTempLabel.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.5)
         lowTempLabel.textAlignment = .center
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("ello")
     }
 }
