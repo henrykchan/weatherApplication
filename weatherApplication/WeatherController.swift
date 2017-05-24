@@ -217,7 +217,6 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         }
         currentDayLabel.textColor = .white
         currentDayLabel.text = getCurrentDay() + "  Today"
-        currentDayLabel.textAlignment = .center
         currentDayLabel.adjustsFontSizeToFitWidth = true
         currentDayLabel.numberOfLines = 0
         currentDayLabel.minimumScaleFactor = 0.3
