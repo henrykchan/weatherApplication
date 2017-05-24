@@ -21,14 +21,6 @@ class FiveDayForecastCell: UICollectionViewCell {
         super.init(frame: frame)
         
         
-//        contentView.layer.masksToBounds = true
-//        contentView.addSubview(blackOverLay)
-//        blackOverLay.snp.makeConstraints { (make) in
-//            make.bottom.equalTo(contentView.snp.bottom)
-//            make.top.equalTo(contentView.snp.top)
-//            make.left.equalTo(contentView.snp.left)
-//            make.height.equalTo(contentView.snp.right)
-//        }
         contentView.addSubview(dayOfWeekLabel)
         dayOfWeekLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView.snp.centerX)
@@ -38,7 +30,8 @@ class FiveDayForecastCell: UICollectionViewCell {
         dayOfWeekLabel.text = "Mon"
         dayOfWeekLabel.textColor = .white
         dayOfWeekLabel.textAlignment = .center
-//        dayOfWeekLabel.font = UIFont(name: "Avenir-Light", size: 2)
+        dayOfWeekLabel.adjustsFontSizeToFitWidth = true
+        dayOfWeekLabel.minimumScaleFactor = 0.3
         
         contentView.addSubview(weatherIDImageView)
         weatherIDImageView.snp.makeConstraints { (make) in
@@ -55,9 +48,10 @@ class FiveDayForecastCell: UICollectionViewCell {
             make.top.equalTo(weatherIDImageView.snp.bottom).offset(40)
             make.width.equalTo(contentView.snp.width)
         }
-//        highTempLabel.text = "70"
         highTempLabel.textColor = .white
         highTempLabel.textAlignment = .center
+        highTempLabel.adjustsFontSizeToFitWidth = true
+        highTempLabel.minimumScaleFactor = 0.3
         
         
         contentView.addSubview(lowTempLabel)
@@ -66,9 +60,11 @@ class FiveDayForecastCell: UICollectionViewCell {
             make.top.equalTo(highTempLabel.snp.bottom)
             make.width.equalTo(contentView.snp.width)
         }
-//        lowTempLabel.text = "50"
+
         lowTempLabel.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.5)
         lowTempLabel.textAlignment = .center
+        lowTempLabel.adjustsFontSizeToFitWidth = true
+        lowTempLabel.minimumScaleFactor = 0.3
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -84,6 +84,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         cityNameLabel.adjustsFontSizeToFitWidth = true
         cityNameLabel.numberOfLines = 0
         cityNameLabel.font = cityNameLabel.font.withSize(30)
+        cityNameLabel.minimumScaleFactor = 0.3
         
         
         // CurrentTemp Label constraints and settings
@@ -97,8 +98,11 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
 //        currentTempLabel.baselineAdjustment = .alignCenters
         currentTempLabel.textAlignment = .center
         currentTempLabel.adjustsFontSizeToFitWidth = true
+        currentTempLabel.minimumScaleFactor = 0.3
         currentTempLabel.numberOfLines = 0
         currentTempLabel.lineBreakMode = .byWordWrapping
+        
+      
         
         // Condition Label constraints and settings
         currentTempLabel.addSubview(conditionLabel)
@@ -110,6 +114,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         conditionLabel.textAlignment = .center
         conditionLabel.adjustsFontSizeToFitWidth = true
         conditionLabel.numberOfLines = 0
+        conditionLabel.minimumScaleFactor = 0.3
         
         // High Temp Label constraints and settings
         backgroundImageView.addSubview(highTempLabel)
@@ -122,6 +127,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         highTempLabel.textAlignment = .center
         highTempLabel.adjustsFontSizeToFitWidth = true
         highTempLabel.numberOfLines = 0
+        highTempLabel.minimumScaleFactor = 0.3
         
         // Low Temp Label constraints and settings
         backgroundImageView.addSubview(lowTempLabel)
@@ -134,6 +140,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         lowTempLabel.textAlignment = .center
         lowTempLabel.adjustsFontSizeToFitWidth = true
         lowTempLabel.numberOfLines = 0
+        lowTempLabel.minimumScaleFactor = 0.3
         
         // Wind Speed Label constraints and settings
         backgroundImageView.addSubview(windSpeedLabel)
@@ -145,6 +152,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         windSpeedLabel.textAlignment = .center
         windSpeedLabel.adjustsFontSizeToFitWidth = true
         windSpeedLabel.numberOfLines = 0
+        windSpeedLabel.minimumScaleFactor = 0.3
         
         // Wind image constraints and settings
         backgroundImageView.addSubview(windImageView)
@@ -167,19 +175,6 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         }
         weatherIDImageView.tintColor = .white
         
-        //Setup scroll view
-//        backgroundImageView.addSubview(scrollViewForecast)
-//        scrollViewForecast.snp.makeConstraints { (make) in
-//            make.top.equalTo(self.view.snp.centerY).offset(90)
-//            make.width.equalTo(backgroundImageView.snp.width).offset(-(backgroundImageView.frame.width / 5))
-//            make.bottom.equalTo(backgroundImageView.snp.bottom)
-//            make.left.equalTo(backgroundImageView.snp.left)
-//        }
-//        scrollViewForecast.sizeToFit()
-//        scrollViewForecast.isScrollEnabled = true
-//        scrollViewForecast.showsHorizontalScrollIndicator = true
-////        scrollViewForecast.contentSize = fiveDayForecastView.frame.size
-////        print(scrollViewForecast.contentSize)
         
         // Setup FiveDayForecast Collection View
         backgroundImageView.addSubview(fiveDayForecastView)
@@ -222,6 +217,10 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         }
         currentDayLabel.textColor = .white
         currentDayLabel.text = getCurrentDay() + "  Today"
+        currentDayLabel.textAlignment = .center
+        currentDayLabel.adjustsFontSizeToFitWidth = true
+        currentDayLabel.numberOfLines = 0
+        currentDayLabel.minimumScaleFactor = 0.3
         
         
     }
