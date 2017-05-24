@@ -188,6 +188,7 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
 
         
         //Divider Label constraints and settings
+        
         //First Divider
         backgroundImageView.addSubview(firstDividerLineLabel)
         firstDividerLineLabel.snp.makeConstraints { (make) in
@@ -225,17 +226,6 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
     }
     
     
-   
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        
-////        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "forecastCell", for: indexPath) as! FiveDayForecastCell
-//        
-//        print("tapped")
-//        
-//    }
-    
-    
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         print("This is the count \(forecasts.count)")
@@ -259,14 +249,6 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         cell?.weatherIDImageView.image = self.weatherImage(forecast: newForecast[indexPath.row]).withRenderingMode(.alwaysTemplate)
         cell?.dayOfWeekLabel.text = self.getRestOfTheWeek()[indexPath.row]
         
-//        cell.backgroundColor = .blue
-        
-        
-
-        
-        
-
-        
         return cell!
     }
     
@@ -282,19 +264,13 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         layout.itemSize = CGSize(width: screenWidth, height: screenHeight)
         layout.minimumLineSpacing = 1
         layout.minimumInteritemSpacing = 0
-//        let testsize = CGRect(x: 0.0, y: screenSize.height * 0.65, width: screenSize.width, height: screenSize.height * 0.35)
         fiveDayForecastView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         fiveDayForecastView.dataSource = self
         fiveDayForecastView.delegate = self
         
         fiveDayForecastView.register(FiveDayForecastCell.self, forCellWithReuseIdentifier: "forecastCell")
-//        fiveDayForecastView.isUserInteractionEnabled = true
         fiveDayForecastView.isScrollEnabled = true
         fiveDayForecastView.alwaysBounceHorizontal = true
-//        fiveDayForecastView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 50)
-//        fiveDayForecastView.showsVerticalScrollIndicator = false
-//        fiveDayForecastView.showsHorizontalScrollIndicator = false
-
     }
     
     
@@ -387,12 +363,6 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
         }
     }
     
-//    func dayOfWeek() -> String {
-//        
-//        let currentDay = NSDate()
-//        
-//        
-//    }
     func getDayOfWeek()->Int {
         
         let todayDate = NSDate()
@@ -478,24 +448,6 @@ class WeatherController: UIViewController, CLLocationManagerDelegate, UICollecti
 
 }
 
-
-//        print(self.forecasts)
-//        sharedInstance.getWeather(city: "brooklyn") { (forecast, error) in
-//
-//            guard let unwrappedForecast = forecast else{return}
-//
-//            if let error = error {
-//                print ("Oops looks like there is an error fetching forecast, Error:\(error)")
-//            }
-//            else {
-//                self.currentTempLabel.text = String(describing: unwrappedForecast.currentTemp) + "°"
-//                self.conditionLabel.text = (unwrappedForecast.condition).capitalized
-//                self.cityNameLabel.text = (unwrappedForecast.cityName).capitalized
-//                self.highTempLabel.text = "High: " + String(describing: unwrappedForecast.highTemp)
-//                self.lowTempLabel.text = "Low: " + String(describing: unwrappedForecast.lowTemp)
-//                self.windSpeedLabel.text = String(describing: unwrappedForecast.windSpeed) + " m/s"
-//            }
-//        }
 
 
 
